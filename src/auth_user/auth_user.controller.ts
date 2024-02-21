@@ -37,13 +37,10 @@ export class AuthUserController {
   @Post('/login')
   async login(
     @Body() LoginDto: LoginDto,
-    @Res({ passthrough: true }) response: Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<any> {
-    const refresh_token = await this.jwtService.sign(LoginDto, {
-      expiresIn: '30d',
-    });
-    response.cookie('token', refresh_token);
-    return this.authUserService.Login(LoginDto);
+    
+    return this.authUserService.Login(LoginDto,res);
   }
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)

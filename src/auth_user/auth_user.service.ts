@@ -8,13 +8,14 @@ import * as bcrypt from 'bcryptjs';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Return_Login, Refresh_token } from './dto/Interface_All_Data';
+import { Response } from 'express';
 @Injectable()
 export class AuthUserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
   async Sign(SigninDto: SigninDto): Promise<User> {
     const { UserName, Email, Password } = SigninDto;
     if (
@@ -40,7 +41,7 @@ export class AuthUserService {
     });
     return await this.usersRepository.save(NewData);
   }
-  async Login(LoginDto: LoginDto): Promise<Return_Login> {
+  async Login(LoginDto: LoginDto, res: Response): Promise<Return_Login> {
     const { Email, Password } = LoginDto;
     if (Email.trim().length === 0 || Password.trim().length === 0) {
       throw new BadRequestException('There is empty data...');
@@ -58,7 +59,11 @@ export class AuthUserService {
     }
     const payload = { id: found_Email.id, role: found_Email.role };
     const access_token = await this.jwtService.sign(payload);
-
+    const refresh_token = await this.jwtService.sign({ id: found_Email.id,
+    email:found_Email.Email }, {
+      expiresIn: '30d',
+    });
+    res.cookie('token', refresh_token);
     return {
       access_token,
       UserName: found_Email.UserName,
