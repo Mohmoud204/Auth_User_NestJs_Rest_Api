@@ -8,7 +8,7 @@ import * as bcrypt from 'bcryptjs';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Return_Login, Refresh_token } from './dto/Interface_All_Data';
-import { Response } from 'express';
+import { Response ,Request} from 'express';
 @Injectable()
 export class AuthUserService {
   constructor(
@@ -60,8 +60,7 @@ export class AuthUserService {
     }
     const payload = { id: found_Email.id, role: found_Email.role };
     const access_token = await this.jwtService.sign(payload);
-    const refresh_token = await this.jwtService.sign({ id: found_Email.id,
-    email:found_Email.Email }, {
+    const refresh_token = await this.jwtService.sign({ id: found_Email.id }, {
       expiresIn: '30d',
     });
     res.cookie('token', refresh_token);
@@ -73,10 +72,11 @@ export class AuthUserService {
   async Findall(): Promise<User[]> {
     return await this.usersRepository.find();
   }
-  async RefreshToken(Email): Promise<Refresh_token> {
+  async RefreshToken(id): Promise<Refresh_token> {
     const found_Email = await this.usersRepository.findOne({
-      where: { Email },
+      where: { id:id },
     });
+      
     if (!found_Email) {
       throw new UnauthorizedException('The email does not exist before...');
     }

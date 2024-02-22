@@ -26,7 +26,8 @@ export class RefreshTokenGuard implements CanActivate {
         secret: process.env.PASSWORD_TOKEN as any,
       });
 
-      request['refresh'] = payload;
+      request['refresh'] = payload.id;
+      
     } catch {
       throw new ForbiddenException();
     }
