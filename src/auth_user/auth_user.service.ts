@@ -66,6 +66,7 @@ export class AuthUserService {
     res.cookie('token', refresh_token);
     return {
       access_token,
+      refresh_token,
       UserName: found_Email.UserName,
     };
   }

@@ -35,7 +35,7 @@ export class RefreshTokenGuard implements CanActivate {
   }
 
   private extractTokenFromHeader(@Req() request: Request): string | undefined {
-    const token = request.cookies['token'];
-    return token;
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
