@@ -19,6 +19,6 @@ export class User {
   @IsNotEmpty({ message: 'Password cannot be empty.' })
   Password: string;
 
-  @Column()
+  @Column({default:"user"})
   role: string;
 }
