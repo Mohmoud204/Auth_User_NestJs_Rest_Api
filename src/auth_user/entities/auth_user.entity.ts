@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn(primary: true, generated: 'uuid')
   id: number;
 
   @Column({ unique: true, length: 225, nullable: true, type: 'varchar' })
