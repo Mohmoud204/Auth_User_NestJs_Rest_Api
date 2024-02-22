@@ -3,7 +3,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn(primary: true, generated: 'uuid')
+  @PrimaryGeneratedColumn({ primary: true, generated: 'uuid' })
   id: number;
 
   @Column({ unique: true, length: 225, nullable: true, type: 'varchar' })
@@ -19,6 +19,6 @@ export class User {
   @IsNotEmpty({ message: 'Password cannot be empty.' })
   Password: string;
 
-  @Column({default:"user"})
+  @Column({ default: "user" })
   role: string;
 }
