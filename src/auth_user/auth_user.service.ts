@@ -38,7 +38,7 @@ export class AuthUserService {
       UserName,
       Email,
       Password: Password_hash,
-      role:SigninDto.role|| "user"
+      role:SigninDto.role?SigninDto.role: "user"
     });
     return await this.usersRepository.save(NewData);
   }
