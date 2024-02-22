@@ -17,7 +17,7 @@ export class AuthUserService {
     private jwtService: JwtService,
   ) { }
   async Sign(SigninDto: SigninDto): Promise<User> {
-    const { UserName, Email, Password } = SigninDto;
+    const { UserName, Email, Password} = SigninDto;
     if (
       UserName.trim().length === 0 ||
       Email.trim().length === 0 ||
@@ -38,6 +38,7 @@ export class AuthUserService {
       UserName,
       Email,
       Password: Password_hash,
+      role:SigninDto.role|| "user"
     });
     return await this.usersRepository.save(NewData);
   }
