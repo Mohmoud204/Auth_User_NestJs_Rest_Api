@@ -60,9 +60,7 @@ export class AuthUserService {
     }
     const payload = { id: found_Email.id, role: found_Email.role };
     const access_token = await this.jwtService.sign(payload);
-    const refresh_token = await this.jwtService.sign({ id: found_Email.id }, {
-      expiresIn: '30d',
-}
+    const refresh_token = await this.jwtService.sign({ id: found_Email.id }, {expiresIn: '30d',}
     return {
       access_token,
       refresh_token,
