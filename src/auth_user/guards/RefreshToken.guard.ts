@@ -19,7 +19,7 @@ export class RefreshTokenGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("You are not registered...");
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
@@ -29,7 +29,7 @@ export class RefreshTokenGuard implements CanActivate {
       request['refresh'] = payload.id;
       
     } catch {
-      throw new ForbiddenException();
+      throw new ForbiddenException("Log in again");
     }
     return true;
   }
