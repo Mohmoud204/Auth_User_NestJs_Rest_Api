@@ -3,8 +3,8 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 @Entity()
 export class User {
-  @Column({ primary: true, generated: 'uuid' })
- // @PrimaryGeneratedColumn()
+  //@Column({ primary: true, generated: 'uuid' })
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column({ unique: true, length: 225, nullable: true, type: 'varchar' })
