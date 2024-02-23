@@ -51,6 +51,6 @@ export class AuthUserController {
   @UseGuards(RefreshTokenGuard)
   @Get('/RefreshToken')
   RefreshToken(@Request() req) {
-    return this.authUserService.RefreshToken(req.user.id);
+    return this.authUserService.RefreshToken(req.refresh.id);
   }
 }
