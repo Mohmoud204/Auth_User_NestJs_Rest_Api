@@ -48,7 +48,7 @@ export class AuthUserController {
   Findall(): Promise<SigninDto[]> {
     return this.authUserService.Findall();
   }
-  @UseGuards(AuthGuard)
+  @UseGuards(RefreshTokenGuard)
   @Get('/RefreshToken')
   RefreshToken(@Request() req) {
     return this.authUserService.RefreshToken(req.user.id);
