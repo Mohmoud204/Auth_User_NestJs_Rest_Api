@@ -8,7 +8,7 @@ import * as bcrypt from 'bcryptjs';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Return_Login, Refresh_token } from './dto/Interface_All_Data';
-import { Response ,Request} from 'express';
+import { Response, Request } from 'express';
 @Injectable()
 export class AuthUserService {
   constructor(
@@ -17,7 +17,7 @@ export class AuthUserService {
     private jwtService: JwtService,
   ) { }
   async Sign(SigninDto: SigninDto): Promise<User> {
-    const { UserName, Email, Password} = SigninDto;
+    const { UserName, Email, Password } = SigninDto;
     if (
       UserName.trim().length === 0 ||
       Email.trim().length === 0 ||
@@ -38,7 +38,7 @@ export class AuthUserService {
       UserName,
       Email,
       Password: Password_hash,
-      
+
     });
     return await this.usersRepository.save(NewData);
   }
@@ -60,12 +60,10 @@ export class AuthUserService {
     }
     const payload = { id: found_Email.id, role: found_Email.role };
     const access_token = await this.jwtService.sign(payload);
-    const refresh_token = await this.jwtService.sign({ id: found_Email.id }, {expiresIn: '30d'})
-    res.cookie("token",refresh_token,{httpOnly: true,
-    secure:true,sameSite:"none"})
+    const refresh_token = await this.jwtService.sign({ id: found_Email.id }, { expiresIn: '30d' })
     return {
       access_token,
-     // refresh_token,
+      refresh_token,
       UserName: found_Email.UserName,
     };
   }
@@ -74,9 +72,9 @@ export class AuthUserService {
   }
   async RefreshToken(id): Promise<Refresh_token> {
     const found_Email = await this.usersRepository.findOne({
-      where: { id:id },
+      where: { id: id },
     });
-      
+
     if (!found_Email) {
       throw new UnauthorizedException('The email does not exist before...');
     }
