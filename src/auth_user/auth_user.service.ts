@@ -61,7 +61,8 @@ export class AuthUserService {
     const payload = { id: found_Email.id, role: found_Email.role };
     const access_token = await this.jwtService.sign(payload);
     const refresh_token = await this.jwtService.sign({ id: found_Email.id }, {expiresIn: '30d'})
-    res.cookie("token",refresh_token,{httpOnly: true})
+    res.cookie("token",refresh_token,{httpOnly: true,
+    secure:true,sameSite:"None"})
     return {
       access_token,
      // refresh_token,
